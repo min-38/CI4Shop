@@ -17,10 +17,12 @@ if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Home');
+$routes->setDefaultController('PostController');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
+$routes->setAutoRoute(false);
+
 // The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
 // where controller filters or CSRF protection are bypassed.
 // If you don't want to define all routes, please use the Auto Routing (Improved).
@@ -35,7 +37,20 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+// $routes->get('/', 'Home::index');
+$routes->get('/', 'HomeController::index');
+
+// $routes->get('/', 'PostController::index');
+$routes->post('post/add', 'PostController::add');
+$routes->get('post/fetch', 'PostController::fetch');
+$routes->get('post/edit/(:num)', 'PostController::edit/$1');
+$routes->get('post/delete/(:num)', 'PostController::delete/$1');
+$routes->get('post/detail/(:num)', 'PostController::detail/$1');
+$routes->post('post/update', 'PostController::update');
+
+// Auth
+$routes->post('/api/user/login', 'AuthController::login');
+$routes->post('/api/user/register', 'AuthController::register');
 
 /*
  * --------------------------------------------------------------------
